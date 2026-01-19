@@ -47,8 +47,3 @@ Flask and SQLite were chosen for simplicity and lightweight deployment. Jinja2 t
 2. Install dependencies using `pip install flask`  
 3. Initialize the database using `flask --app app.py init-db`  
 4. Run the application using `flask --app app.py run`
-
-## Author
-Alanoud Alyahya  
-Computer Science Student  
-Interested in Web Development and Software Programming
