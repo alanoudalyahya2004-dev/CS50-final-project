@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ _('register') }} • Volunteer Hub{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card glass-card p-4">
+                <h3 class="mb-3">{{ _('register') }}</h3>
+                <form method="post" action="{{ url_for('register') }}">
+                <!-- Name -->
+                    <div class="mb-3">
+                        <label class="form-label" for="name">{{ _('name') }}</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
+                <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label" for="email">{{ _('email') }}</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label" for="password">{{ _('password') }}</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                <!-- Role (default volunteer) -->
+                    <div class="mb-3">
+                        <label class="form-label" for="role">{{ _('role') }}</label>
+                        <select id="role" name="role" class="form-select">
+                            <option value="volunteer">{{ _('role_volunteer') }}</option>
+                            <option value="admin">{{ _('role_admin') }}</option>
+                        </select>
+                        <div class="form-text">{{ _('role_hint') }}</div>
+                    </div>
+
+                    <button class="btn btn-primary btn-pill w-100" type="submit">{{ _('create_account') }}</button>
+                </form>
+
+                <p class="small mt-3 mb-0">
+                    {{ _('have_account_q') }}
+                    <a href="{{ url_for('login') }}">{{ _('login') }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

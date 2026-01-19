@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ _('upcoming_events') }} • Volunteer Hub{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">{{ _('upcoming_events') }}</h2>
+
+    <div class="row g-3">
+        {% for ev in events %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+
+                <!-- Title -->
+                        <h5 class="card-title fw-bold mb-2">{{ ev["title"] }}</h5>
+
+                <!-- Description -->
+                        <p class="card-text text-secondary small mb-3">{{ ev["description"] or "" }}</p>
+
+                <!-- Date & Time -->
+                        {% if ev["start_dt"] %}
+                            {% set date_str = ev["start_dt"][:10] %}
+                            {% set hh = ev["start_dt"][11:13]|int %}
+                            {% set mm = ev["start_dt"][14:16] %}
+                            {% set ampm = 'AM' if hh < 12 else 'PM' %}
+                            {% set hh12 = 12 if hh == 0 else (hh - 12 if hh > 12 else hh) %}
+                            <div class="mb-2">
+                                <span class="fw-bold">{{ ampm }} {{ hh12 }}:{{ mm }}</span>
+                                <span class="ms-2">{{ date_str }}</span>
+                            </div>
+                        {% endif %}
+
+                <!-- Location -->
+                        <div class="text-muted mb-3">
+                            📍 {{ ev["location"] }}
+                        </div>
+
+                <!-- Button -->
+                        <div class="mt-auto">
+                            <a href="{{ url_for('event_detail', event_id=ev['id']) }}" class="btn btn-outline-primary btn-sm btn-pill w-100">
+                                {{ _('event_details') }}
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+            </div>
+
+        {% else %}
+            <p class="text-muted">{{ _('no_events') }}</p>
+        {% endfor %}
+    </div>
+    </section>
+{% endblock %}

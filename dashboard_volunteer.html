@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ _('nav_volunteer') }} • Volunteer Hub{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">{{ _('nav_volunteer') }}</h2>
+
+    <div class="glass-card p-3 mb-4">
+        <strong>{{ _('vol_total_hours') }}:</strong>
+        {{ "%.2f"|format(total_hours) }}
+    </div>
+
+    <table class="table table-hover glass-card">
+        <thead>
+            <tr>
+                <th>{{ _('event') }}</th>
+                <th>{{ _('date') }}</th>
+                <th>{{ _('location') }}</th>
+                <th>{{ _('status') }}</th>
+                <th>{{ _('hours') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in regs %}
+                <tr>
+                    <td>{{ r["title"] }}</td>
+                    <td>{{ r["date"]|datetimeformat }}</td>
+                    <td>{{ r["location"] }}</td>
+                    <td>{{ _('st_' + (r['status'] or 'registered')) }}</td>
+                    <td>{{ r["hours"] }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-muted">{{ _('no_records') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

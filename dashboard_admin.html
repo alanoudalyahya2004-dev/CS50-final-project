@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}{{ _('nav_admin') }} • Volunteer Hub{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">{{ _('nav_admin') }}</h2>
+
+<!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="glass-card p-3">
+                <div class="small text-secondary">{{ _('stats_volunteers') }}</div>
+                <div class="fs-4 fw-bold">{{ stats.volunteers }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-3">
+                <div class="small text-secondary">{{ _('stats_events') }}</div>
+                <div class="fs-4 fw-bold">{{ stats.events }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-3">
+                <div class="small text-secondary">{{ _('stats_hours') }}</div>
+                <div class="fs-4 fw-bold">{{ "%.2f"|format(stats.hours or 0) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+    <!-- Create event -->
+        <div class="col-lg-5">
+            <div class="glass-card p-4">
+                <h5 class="mb-3">{{ _('create_event') }}</h5>
+                <form method="post" action="{{ url_for('create_event') }}">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">{{ _('title') }}</label>
+                        <input class="form-control" id="title" name="title" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="start_dt">{{ _('start_time_🕒') }}</label>
+                        <input class="form-control" id="start_dt" name="start_dt" type="datetime-local" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="end_dt">{{ _('end_time_🕒') }}</label>
+                        <input class="form-control" id="end_dt" name="end_dt" type="datetime-local" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="location">{{ _('location') }}</label>
+                        <input class="form-control" id="location" name="location" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="capacity">{{ _('capacity') }}</label>
+                        <input class="form-control" id="capacity" name="capacity" type="number" min="1" placeholder="e.g., 50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="description">{{ _('description') }}</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary btn-pill" type="submit">{{ _('create') }}</button>
+                </form>
+            </div>
+        </div>
+
+
+    <!-- Latest registrations -->
+        <div class="col-lg-7">
+            <div class="glass-card p-4">
+                <h5 class="mb-3">{{ _('latest_registrations') }}</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{{ _('volunteer') }}</th>
+                                <th>{{ _('event') }}</th>
+                                <th>{{ _('status') }}</th>
+                                <th style="width: 180px;">{{ _('hours') }}</th>
+                                <th class="text-nowrap">{{ _('actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in latest_regs %}
+                                <tr>
+                                    <td>{{ r["id"] }}</td>
+                                    <td>{{ r["user_name"] }}</td>
+                                    <td>{{ r["event_title"] }}</td>
+
+
+                                    <td>
+                                        <form method="post" action="{{ url_for('mark_attendance', reg_id=r['id']) }}" class="d-flex align-items-center gap-2">
+                                            <select class="form-select form-select-sm w-auto" name="status">
+                                                <option value="registered" {{ 'selected' if r["status"]=='registered' else '' }}>{{ _('st_registered') }}</option>
+                                                <option value="attended" {{ 'selected' if r["status"]=='attended'  else '' }}>{{ _('st_attended') }}</option>
+                                                <option value="cancelled" {{ 'selected' if r["status"]=='cancelled' else '' }}>{{ _('st_cancelled') }}</option>
+                                            </select>
+                                        </td>
+
+
+                                        <td class="text-center">
+                                            <div class="input-group input-group-sm justify-content-center w-110">
+                                                <input class="form-control text-center" name="hours" type="number" min="0" step="0.5" value="{{ r['hours'] or 0 }}" aria-label="{{ _('hours') }}">
+                                                <span class="input-group-text">{{ _('h_unit') or 'ساعة' }}</span>
+                                            </div>
+                                        </td>
+
+
+                                        <td class="text-nowrap">
+                                            <button class="btn btn-sm btn-primary">{{ _('update') }}</button>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-muted">{{ _('no_registrations') }}</td>
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="my-4">
+
+            <!-- Upcoming events quick list -->
+                <h6 class="mb-3">{{ _('upcoming_events') }}</h6>
+                <ul class="list-group">
+                    {% for ev in events %}
+
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ ev["title"] }} — {{ ev["date"]|datetimeformat }}</span>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit_event_form', event_id=ev['id']) }}">✏️ {{ _('edit') }}</a>
+
+                                <form method="post" action="{{ url_for('delete_event', event_id=ev['id']) }}" style="display:inline">
+                                    <button class="btn btn-sm btn-danger" onclick="return confirm('{{ _('delete_confirm') }}');">
+                                        🗑️ {{ _('delete') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+
+
+                    {% else %}
+                        <li class="list-group-item text-muted">{{ _('no_events') }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% if pending and pending|length %}
+        <div class="glass-card p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">{{ _('pending_hour_submissions') }}</h5>
+                <a class="btn btn-outline-success btn-sm" href="{{ url_for('export_hours') }}">{{ _('export_csv_⬇️') }}</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{{ _('volunteer') }}</th>
+                            <th>{{ _('event') }}</th>
+                            <th>{{ _('base') }}</th>
+                            <th>{{ _('extra') }}</th>
+                            <th>{{ _('description') }}</th>
+                            <th>{{ _('submitted') }}</th>
+                            <th>{{ _('actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in pending %}
+                            <tr>
+                                <td>{{ r["id"] }}</td>
+                                <td>{{ r["user_name"] }}</td>
+                                <td>{{ r["event_title"] }}</td>
+                                <td>{{ r["self_hours"] or 0 }}</td>
+                                <td>{{ r["extra_hours"] or 0 }}</td>
+                                <td class="small">{{ r["extra_desc"] or '' }}</td>
+                                <td class="small text-nowrap">{{ r["submitted_at"]|datetimeformat }}</td>
+                                <td class="text-nowrap">
+                                    <form method="post" action="{{ url_for('approve_hours', reg_id=r['id']) }}" class="d-inline">
+                                        <button class="btn btn-sm btn-primary">{{ _('approve') }}</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('reject_hours', reg_id=r['id']) }}" class="d-inline" onsubmit="return confirm('Reject this submission?');">
+                                        <button class="btn btn-sm btn-outline-danger">{{ _('reject') }}</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="glass-card p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ _('pending_hour_submissions') }}</h5>
+                <a class="btn btn-outline-success btn-sm" href="{{ url_for('export_hours') }}">{{ _('export_csv_⬇️') }}</a>
+            </div>
+            <p class="text-muted mt-3">{{ _('No_pending_submissions_.') }}</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

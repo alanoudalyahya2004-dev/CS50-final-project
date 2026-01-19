@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ _('not_found_title') }}{% endblock %}
+
+{% block content %}
+    <div class="glass-card p-4 text-center">
+        <h3 class="mb-2">404</h3>
+        <p class="mb-3">{{ _('not_found_msg') }}</p>
+        <a class="btn btn-primary btn-pill" href="{{ url_for('admin_dashboard') }}">
+            {{ _('back_to_dashboard') }}
+        </a>
+    </div>
+{% endblock %}

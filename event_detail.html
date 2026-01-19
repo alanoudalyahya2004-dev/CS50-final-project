@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ _('event_details') }} • Volunteer Hub{% endblock %}
+
+{% block content %}
+    <div class="card glass-card p-4">
+        <h2 class="mb-2">{{ ev["title"] }}</h2>
+        <p class="text-secondary">{{ ev["description"] or "" }}</p>
+
+        <div class="mb-3">
+            <span class="me-3">📅 {{ _('from') }} {{ ev["start_dt"]|datetimeformat }}</span>
+            <span class="me-3">{{ _('to') }} {{ ev["end_dt"]|datetimeformat }}</span>
+
+            <span>📍 {{ ev["location"] }}</span>
+        </div>
+
+
+        <p class="mb-3">
+            {{ _('registered_count') }}:
+            <strong>{{ total_registered }}</strong>
+            {% if ev["capacity"] %}/ {{ ev["capacity"] }}{% endif %}
+        </p>
+
+        {% if session.get("user_id") %}
+            {% if reg %}
+                <form method="post" action="{{ url_for('cancel_registration', event_id=ev['id']) }}">
+                    <button class="btn btn-outline-danger btn-pill">{{ _('cancel_btn') }}</button>
+                </form>
+            {% else %}
+                <form method="post" action="{{ url_for('register_event', event_id=ev['id']) }}">
+                    <button class="btn btn-primary btn-pill">{{ _('register_btn') }}</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-secondary btn-pill" href="{{ url_for('login') }}">{{ _('login_to_register') }}</a>
+        {% endif %}
+    </div>
+
+    {% if reg %}
+        <div class="glass-card p-3 mt-4">
+            <h6 class="mb-3">{{ _('submit_hours_title') }}</h6>
+
+
+    <!-- If already submitted and waiting -->
+            {% if reg["submitted_at"] and not reg["approved_hours"] %}
+                <div class="alert alert-warning py-2">
+                    {{ _('submitted_waiting').format(date=reg["submitted_at"]|datetimeformat) }}
+                </div>
+            {% endif %}
+
+    <!-- If approved -->
+            {% if reg["approved_hours"] %}
+                <div class="alert alert-success py-2">
+                    {{ _('approved_ok').format(hours=reg["approved_hours"], date=reg["approved_at"]|datetimeformat) }}
+                </div>
+            {% endif %}
+
+
+
+    <!-- Submission form (always enabled; admin uses approval to validate) -->
+            <form method="post" action="{{ url_for('submit_hours', event_id=ev['id']) }}" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">{{ _('base_hours_label') }}</label>
+                    <input class="form-control" value="{{ (base_hours or 0) }}" disabled>
+                    <div class="form-text">{{ _('base_hours_hint') }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">{{ _('extra_hours_label') }}</label>
+                    <input class="form-control" type="number" name="extra_hours" step="0.5" min="0" value="{{ (reg['extra_hours'] if reg else '') }}">
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">{{ _('extra_desc_label') }}</label>
+                    <textarea class="form-control" name="extra_desc" rows="2" placeholder="{{ _('extra_desc_ph') }}">{{ (reg['extra_desc'] if reg and reg['extra_desc'] else '') }}</textarea>
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-primary btn-pill">{{ _('submit_hours') }}</button>
+                </div>
+            </form>
+
+        </div>
+    {% endif %}
+
+{% endblock %}
