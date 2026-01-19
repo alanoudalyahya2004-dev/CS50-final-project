@@ -56,20 +56,20 @@ The platform makes volunteering easier for both **volunteers** and **administrat
 
 - **templates/**
   Contains HTML files written with Jinja2 templating.
-  - `base.html` â Main layout file (header, navbar, footer).
-  - `home.html` â Homepage showing upcoming events.
-  - `events.html` â List of all events with registration buttons.
-  - `event_detail.html` â Detailed view of a single event, including hour submission.
-  - `login.html` / `register.html` â Authentication pages.
-  - `dashboard_admin.html` â Admin dashboard for stats, event management, and approvals.
-  - `dashboard_volunteer.html` â Volunteer dashboard showing personal hours and registrations.
-  - `404.html` â Custom error page.
+  - `base.html` →  Main layout file (header, navbar, footer).
+  - `home.html` →  Homepage showing upcoming events.
+  - `events.html` →  List of all events with registration buttons.
+  - `event_detail.html` →  Detailed view of a single event, including hour submission.
+  - `login.html` / `register.html` →  Authentication pages.
+  - `dashboard_admin.html` →  Admin dashboard for stats, event management, and approvals.
+  - `dashboard_volunteer.html` →  Volunteer dashboard showing personal hours and registrations.
+  - `404.html` →  Custom error page.
 
 - **static/**
   Contains static assets:
-  - `style.css` â Custom CSS styling.
-  - `js/main.js` â Handles language switching and dark mode.
-  - `favicon.ico` â Website icon.
+  - `style.css` →  Custom CSS styling.
+  - `js/main.js` →  Handles language switching and dark mode.
+  - `favicon.ico` →  Website icon.
 
 - **instance/app.db**
   SQLite database storing users, events, registrations, and submitted hours.
