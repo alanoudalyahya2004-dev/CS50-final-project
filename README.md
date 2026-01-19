@@ -1,99 +1,54 @@
-# CS50-final-project
-Volunteer Hub
+# Volunteer Hub
+CS50 Final Project
 
-Video Demo: https://youtu.be/v4DBJbmbirU?si=4Pn2yXgo-bpDCKFs
+## Video Demo
+https://youtu.be/v4DBJbmbirU
 
-Description:
+## Description
+Volunteer Hub is a web-based application developed to help student clubs and organizations manage volunteers, track volunteering hours, and recognize contributions in an organized and efficient way.
 
-Volunteer Hub is a web-based application built with Flask (Python), SQLite, HTML, CSS, and Bootstrap. It is designed to help student clubs and organizations manage volunteers, track their hours, and recognize their contributions.
+The platform supports two main user roles: volunteers and administrators. Volunteers can register, view upcoming events, and submit their volunteering hours, while administrators can manage events, review submitted hours, and generate reports.
 
-The platform makes volunteering easier for both volunteers and administrators:
+## Features
+- User authentication with separate roles for volunteers and administrators
+- Event creation, editing, and deletion by administrators
+- Volunteer registration for events with capacity control
+- Submission and review of volunteering hours
+- Approval and rejection workflow for submitted hours
+- Exporting volunteer reports to CSV files
+- Support for Arabic and English interfaces
+- Dark mode option for improved accessibility
 
-Volunteers can register, log in, view upcoming events, and submit their volunteering hours.
-Administrators can create, edit, and delete events, approve or reject submitted hours, and export reports to Excel/CSV.
-Features
+## Technologies Used
+- Python (Flask)
+- SQLite
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
 
-User Authentication
+## Project Structure
+- app.py: Main Flask application and route handling
+- templates/: HTML templates using Jinja2
+- static/: CSS, JavaScript, and static assets
+- instance/app.db: SQLite database
 
-Volunteers and administrators can register and log in with different roles.
-Sessions are handled securely using Flask sessions.
-Event Management
+## Design Decisions
+Flask and SQLite were chosen for simplicity and lightweight deployment. Jinja2 templates were used to support multilingual content, while Bootstrap ensures a responsive and clean user interface. Database constraints are implemented to maintain data integrity and prevent duplicate registrations.
 
-Admins can create events with a title, description, location, start and end times, and capacity.
-Events automatically calculate their base duration (hours).
-Volunteer Registration
+## Future Improvements
+- Email notifications for event reminders and approvals
+- Analytical dashboards for administrators
+- API support for mobile applications
+- Exporting reports directly to Excel format
 
-Volunteers can register for events (if capacity is not full).
-They can cancel their registration if needed.
-Hour Submission
+## How to Run
+1. Clone the repository and navigate to the project directory  
+2. Install dependencies using `pip install flask`  
+3. Initialize the database using `flask --app app.py init-db`  
+4. Run the application using `flask --app app.py run`
 
-Volunteers can submit additional details about their work (e.g., preparing giveaways, printing materials).
-Submitted hours go into a pending state until reviewed.
-Admin Review
-
-Admins can approve or reject hours.
-Approved hours are added to the volunteer’s total.
-Rejected submissions are marked with status “Cancelled” and set to 0 hours.
-Export to Excel/CSV
-
-Admins can download a CSV file containing:
-Volunteer name and email
-Event details
-Submitted hours and descriptions
-Approval status and date
-This feature makes it easier to send reports to external organizations.
-Language & Theme Options
-
-Supports both Arabic and English interface.
-Includes a dark mode toggle for accessibility.
-File Overview
-
-app.py Main Flask application file. Handles routes for events, user authentication, hour submission, and admin dashboard.
-
-templates/ Contains HTML files written with Jinja2 templating.
-
-base.html → Main layout file (header, navbar, footer).
-home.html → Homepage showing upcoming events.
-events.html → List of all events with registration buttons.
-event_detail.html → Detailed view of a single event, including hour submission.
-login.html / register.html → Authentication pages.
-dashboard_admin.html → Admin dashboard for stats, event management, and approvals.
-dashboard_volunteer.html → Volunteer dashboard showing personal hours and registrations.
-404.html → Custom error page.
-static/ Contains static assets:
-
-style.css → Custom CSS styling.
-js/main.js → Handles language switching and dark mode.
-favicon.ico → Website icon.
-instance/app.db SQLite database storing users, events, registrations, and submitted hours.
-
-Design Choices
-
-Flask + SQLite were chosen for simplicity and lightweight deployment. SQLite works well for a small to medium project like this.
-Jinja2 templates allowed easy integration of translation keys ({{ _('...') }}) for Arabic and English support.
-Bootstrap 5 was used for styling, ensuring responsive design and a clean modern interface.
-A custom filter (datetimeformat) was added in app.py to display dates and times clearly in both English and Arabic, including AM/PM.
-Data integrity is enforced in the database to prevent duplicate registrations.
-Future Improvements
-
-Add email notifications for event reminders and hour approvals.
-Implement charts in the admin dashboard (e.g., total hours per volunteer).
-Add API endpoints for mobile app integration.
-Support exporting reports directly to Excel (.xlsx) instead of CSV.
-How to Run
-
-1. Clone the repository
-
-git clone cd project
-
-2. Install dependencies
-
-pip install flask
-
-3. Initialize the database
-
-flask --app app.py init-db
-
-4. Run the server
-
-flask --app app.py run
+## Author
+Alanoud Alyahya  
+Computer Science Student  
+Interested in Web Development and Software Programming
