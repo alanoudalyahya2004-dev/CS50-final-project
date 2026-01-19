@@ -1,4 +1,4 @@
-## CS50 Final Project
+# CS50 Final Project 
 # Volunteer Hub
 
 #### Video Demo: https://youtu.be/v4DBJbmbirU?si=4Pn2yXgo-bpDCKFs
@@ -32,8 +32,8 @@ The platform makes volunteering easier for both **volunteers** and **administrat
 
 5. **Admin Review**
    - Admins can approve or reject hours.
-   - Approved hours are added to the volunteerâs total.
-   - Rejected submissions are marked with status **âCancelledâ** and set to 0 hours.
+   - Approved hours are added to the volunteer’s total.
+   - Rejected submissions are marked with status **“Cancelled”** and set to 0 hours.
 
 6. **Export to Excel/CSV**
    - Admins can download a CSV file containing:
@@ -56,20 +56,20 @@ The platform makes volunteering easier for both **volunteers** and **administrat
 
 - **templates/**
   Contains HTML files written with Jinja2 templating.
-  - `base.html` →  Main layout file (header, navbar, footer).
-  - `home.html` →  Homepage showing upcoming events.
-  - `events.html` →  List of all events with registration buttons.
-  - `event_detail.html` →  Detailed view of a single event, including hour submission.
-  - `login.html` / `register.html` →  Authentication pages.
-  - `dashboard_admin.html` →  Admin dashboard for stats, event management, and approvals.
-  - `dashboard_volunteer.html` →  Volunteer dashboard showing personal hours and registrations.
-  - `404.html` →  Custom error page.
+  - `base.html` → Main layout file (header, navbar, footer).
+  - `home.html` → Homepage showing upcoming events.
+  - `events.html` → List of all events with registration buttons.
+  - `event_detail.html` → Detailed view of a single event, including hour submission.
+  - `login.html` / `register.html` → Authentication pages.
+  - `dashboard_admin.html` → Admin dashboard for stats, event management, and approvals.
+  - `dashboard_volunteer.html` → Volunteer dashboard showing personal hours and registrations.
+  - `404.html` → Custom error page.
 
 - **static/**
   Contains static assets:
-  - `style.css` →  Custom CSS styling.
-  - `js/main.js` →  Handles language switching and dark mode.
-  - `favicon.ico` →  Website icon.
+  - `style.css` → Custom CSS styling.
+  - `js/main.js` → Handles language switching and dark mode.
+  - `favicon.ico` → Website icon.
 
 - **instance/app.db**
   SQLite database storing users, events, registrations, and submitted hours.
@@ -109,5 +109,3 @@ flask --app app.py init-db
 
 # 4. Run the server
 flask --app app.py run
-
-
